@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>RGB Code</title>
+        <!-- <link rel="stylesheet" href="syle.css" type="text/css"></link> -->
+        <link rel="stylesheet" href="css/style.css">
+
+        <style>
+        
+body{
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/demo-bg.jpg");
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+
+    
+}
+h1{
+    color:white;
+    text-align: center;
+    background-color: steelblue;
+    margin: 0;
+    line-height: 1.1;
+    padding: 20px 0;;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+#colorDisplay{
+    font-size: 200%;
+}
+#container{
+    width: 600px;
+    margin : 20px auto;
+    z-index: inherit;
+
+}
+
+#stripe{
+    background-color: white;
+    height: 30px ;
+    text-align: center;
+    color: black;
+}
+
+.square{
+    width: 30%;
+    background-color: purple;
+    padding-bottom: 30%;
+    float: left;
+    margin: 1.66%;
+    border-radius: 15%;
+    transition: background 0.5s;
+    --webkit--transition:background 0.5s;
+    -moz-transition: background 0.5s;
+}
+
+.selected{
+    background-color: steelblue;
+    color:white;
+}
+
+button{
+    border:none;
+    background: none;
+    text-transform: uppercase;
+    height: 100%;
+    font-weight: 700;
+    outline: none;
+    color:steelblue;
+    letter-spacing: 1px;
+    font-size: inherit;
+    transition: all 0.3s;
+    --webkit--transition:all 0.3s;
+    -moz-transition:all 0.3s;
+}
+
+button:hover{
+    color: white;
+    background-color: steelblue;
+}
+#message{
+    display: inline-block;
+    width: 20%;
+}
+        </style>
+    </head>
+    <body>
+
+        <nav id="navbar">
+            <h1 class="logo">
+                <span class="text-primary">
+                    <i class="fas fa-cannabis"></i> B1NARY
+                </span> B0MBERS
+            </h1>
+            <ul>
+                <li><a href="index.html" target="_blank">Home</a></li>
+                <li><a href="https://creator.voiceflow.com/demo/3633211064442960" target="_blank">Theophilus Thistle</a></li>
+                <li><a href="result2.html" target=_blank>View Result</a></li>
+                <!-- <li><a href="#who">Team</a></li> -->
+                <!-- <li><a href="#contact">Contact</a></li> -->
+            </ul>
+        </nav>
+          
+                     
+              
+
+        <h1>THE GRID <br/><span id="colorDisplay">RGB</span><br/> RGB CODE</h1>
+        <div id="stripe">
+            <button id="reset">NEW COLORS</button>
+            <span id="message">
+            </span>
+            <button class="mode">EASY</button>
+            <button  class=" mode selected">HARD</button>
+
+            <button class="mode">VERY HARD</button>
+
+
+        </div>
+        <div id="container">
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+
+        </div>
+         
+    
+    
+
+
+        
+        <!-- <script type="text/javascript" src="file.js"></script> -->
+       
+
+    </body>
+
+    <script>
+    var numsq=6;
+var colors=[];//genrandomcolor(numsp)
+var h1=document.querySelector("h1");
+var squares=document.querySelectorAll(".square");
+var colorDisplay=document.getElementById("colorDisplay");
+var message=document.getElementById("message");
+var reset=document.getElementById("reset");
+var btns=document.querySelectorAll(".mode");
+var pickedcolor;
+
+init();
+function init(){
+
+for(var i=0; i<btns.length; i++){
+    btns[i].addEventListener("click",function(){
+        btns[0].classList.remove("selected");
+        btns[1].classList.remove("selected");
+
+        btns[2].classList.remove("selected");
+        
+        this.classList.add("selected");
+       
+
+        if(this.textContent==="EASY"){
+            numsq=3;
+        }
+        else if (this.textContent==="HARD"){
+            numsq=6;
+        }
+        else if(this.textContent==="VERY HARD"){
+            numsq=9;
+        }
+        
+        resetfn();
+    })
+}
+for(var i=0 ; i< squares.length ; i++){
+    
+    squares[i].addEventListener("click",function(){
+
+        var clickedColor=this.style.backgroundColor;
+        if(clickedColor===pickedcolor){
+            message.textContent="CORRECT!!";
+            changecolor(clickedColor);
+            reset.textContent="PLAY AGAIN??";
+            h1.style.backgroundColor=clickedColor;
+        
+        }
+        else{
+           this.style.backgroundColor="#232323";
+           message.textContent="Try Again";
+        }
+    })
+    
+}
+resetfn();
+
+}
+
+function resetfn(){
+    colors=genrandomColors(numsq);
+    pickedcolor=pickcolor();
+    colorDisplay.textContent=pickedcolor;
+    
+    reset.textContent="NEW COLORS"
+    message.textContent="";
+    
+
+    for(var i=0 ; i< squares.length ; i++){
+        if(colors[i]){
+            
+            squares[i].style.display="block";
+        squares[i].style.backgroundColor = colors[i];}
+        else{
+            squares[i].style.display="none";
+        }
+    }
+
+    h1.style.backgroundColor="steelblue";
+
+}
+
+
+
+
+
+
+function changecolor(color){
+    for(var i=0 ; i< squares.length ; i++){
+        squares[i].style.backgroundColor = color;
+
+    }
+
+}
+
+function pickcolor(){
+ var rand= Math.floor(Math.random() * colors.length );
+ return colors[rand];
+}
+
+function genrandomColors(num){
+  var arr=[];
+
+  for(var i=0 ; i<num ;i++){
+      arr.push(randomColor());
+  }
+
+  return arr;
+
+}
+
+function randomColor(){
+   var r=Math.floor(Math.random()*256);
+   var g=Math.floor(Math.random()*256);
+   var b=Math.floor(Math.random()*256);
+
+
+return "rgb("+ r + ", "+ g +", "+ b +")" ;
+}
+
+
+reset.addEventListener("click",function(){
+    resetfn();
+    
+})
+    </script>
+</html>

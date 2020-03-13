@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+        <title>Numero Monster</title>
+        <link rel="stylesheet" href="css/style.css">
+
+        <!-- <link rel="stylesheet" href="game1.css" /> -->
+
+                                       <!-- css goes here -->
+        <style>
+        *
+{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    word-break: break-all;
+    box-sizing: border-box;
+}
+
+html
+{
+    font-size: 100%;
+    line-height: 1.5;
+}
+
+body
+{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: radial-gradient(circle, #FFF, #AAA);
+    overflow-y: scroll;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+li
+{
+    list-style: none;
+}
+
+::-moz-focus-inner
+{
+    border: 1px solid transparent;
+}
+
+/*************** 2. MAIN **********************/
+main
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 320px;
+    width: 96%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+main > div#container
+{
+    background-color: #9DD2EA;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px #009DE4;
+    font-size: 0;
+    width: 90%;
+}
+
+main > div#container .structure-elements
+{
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+    font-size: initial;
+}
+
+main > div#container > p#message
+{
+    width: 65%;
+    margin-right: 5%;
+    color: white;
+    font-weight: bold;
+    visibility: hidden;
+}
+
+main > div#container > aside#score
+{
+    color: #888E5F;
+    background-color: #F1FF92;
+    box-shadow: 0 4px #9DA853;
+}
+
+main > div#container > div#calculation
+{
+    width: 80%;
+    margin: 0 auto;
+}
+
+main > div#container > div#calculation > *
+{
+    width: 100%;
+    margin-top: 10px;
+}
+
+main > div#container > div#calculation > section#question
+{
+    background-color: #9DA0EA;
+    box-shadow: 0 4px #535AA8;
+    font-size: 6.250rem;
+    height: 170px;
+}
+
+main > div#container > div#calculation > p#instruction
+{
+    background-color: #B481D9;
+    box-shadow: 0 4px #8153A8;
+}
+
+main > div#container > div#calculation > ul#choices
+{
+    padding: 0;
+}
+
+main > div#container > div#calculation > ul#choices > li,
+main > div#container > button#start-reset
+{
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow transform 0.2s;
+}
+
+main > div#container > div#calculation > ul#choices > li
+{
+    width: 100%;
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    height: 44px;
+}
+
+main > div#container > div#calculation > ul#choices > li:active,
+main > div#container > button#start-reset:active
+{
+    color: white;
+    background-color: #9C89F6;
+    box-shadow: 0 0 #6B54D3;
+    transform: translateY(4px);
+}
+
+main > div#container > button#start-reset
+{
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 0;
+    margin: 10px auto;
+    line-height: 1.5;
+    display: block;
+}
+
+main > div#container > aside#time-remaining
+{
+    background-color: rgba(181, 235, 36, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 4px rgba(0, 0, 0, 0.2);
+    visibility: hidden;
+}
+
+main > div#game-over
+{
+    color: white;
+    background-image: linear-gradient(#F3CA6B, #F3706C);
+    font-size: 3rem;
+    text-transform: uppercase;
+    position: absolute;
+    padding: 20px;
+    min-width: 250px;
+    display: none;
+}
+
+/*************** 3. RESPONSIVE **********************/
+/********* pour TABLETTE ************/
+@media all and (min-width: 768px)
+{
+
+}
+
+/*************** 4. RESPONSIVE **********************/
+/********* pour ORDINATEUR ************/
+@media all and (min-width: 992px)
+{
+    /*************** 1. Règles générales **********************/
+
+
+    /*************** 2. MAIN **********************/
+    main
+    {
+        max-width: 1350px;
+        width: 50%;
+    }
+
+    main > div#container
+    {
+        width: 75%;
+    }
+
+    main > div#container > p#message
+    {
+        width: 25%;
+        margin: 0 25%;
+    }
+
+    main > div#container > div#calculation > ul#choices
+    {
+        font-size: 0;
+    }
+
+    main > div#container > div#calculation > ul#choices > li
+    {
+        width: 24%;
+        display: inline-block;
+        font-size: initial;
+    }
+
+    main > div#container > div#calculation > ul#choices > li:not(:last-of-type)
+    {
+        margin-right: 1%;
+    }
+
+    main > div#container > button#start-reset
+    {
+        display: inline-block;
+        margin: 10px;
+    }
+}
+
+        </style>
+
+
+                            <!-- javascript goes here -->
+
+
+        <script>
+        "use strict";   // Mode strict du JavaScript
+
+/*************************************************************************************************/
+/* ****************************************** DONNEES ****************************************** */
+/*************************************************************************************************/
+
+
+
+/*************************************************************************************************/
+/* ***************************************** FONCTIONS ***************************************** */
+/*************************************************************************************************/
+var Counter = {
+    PlayingState: null,
+    IsStoped: true,
+    Score: 0,
+    TimeRemaining: 0,
+    FirstNumber: 0,
+    SecondNumber: 0,
+    CorrectAnswer: 0,
+    CorrectPosition: 0,
+    WrongAnswer: 0,
+    AddContentToElement: function(selector, content)
+    {
+        document.querySelector(selector).innerHTML = content;
+    },
+    ChangeStyle: function(selector, property, value)
+    {
+        document.querySelector(selector).setAttribute(property, value);
+    },
+    Initialize: function(timeRemaining)
+    {
+        this.TimeRemaining = timeRemaining;
+    },
+    GenerateRandomNumber: function(multiplier)
+    {
+        return Math.round( Math.random() * multiplier ) + 1;
+    },
+    Refresh: function(selector, data)
+    {
+        document.querySelector(selector).innerText = (data < 10 ? "0" : "") + data;
+    },
+    LoopThroughElements: function()
+    {
+        var answers = [this.CorrectAnswer];
+
+        for (var index = 1; index < 5; index++)
+        {
+            this.ChangeStyle("ul#choices > li:nth-of-type(" + index + ")", "style", "height:auto;");
+
+            if (index !== this.CorrectPosition)
+            {
+                do
+                {
+                    this.WrongAnswer = this.GenerateRandomNumber(9) * this.GenerateRandomNumber(9);
+                } while ( answers.indexOf(this.WrongAnswer) > -1 );
+
+                this.AddContentToElement( "ul#choices > li:nth-of-type(" + index + ")", this.WrongAnswer );
+                answers.push(this.WrongAnswer);
+            }
+        }
+    },
+    Launch: function()
+    {
+        this.IsStoped = false;
+        this.Action();
+        this.ChangeStyle("aside#time-remaining", "style", "visibility:visible;");
+        this.ChangeStyle("#game-over", "style", "display:none;");
+        this.ChangeStyle("ul#choices", "style", "pointer-events:initial; opacity:1;");
+        this.ChangeStyle("button#start-reset", "style", "visibility:hidden;");
+        this.AddContentToElement("button#start-reset", "Reset Game");
+        this.Refresh("aside#time-remaining > span", this.TimeRemaining);
+        this.GenerateQuestionAndAnswers();
+    },
+    GenerateQuestionAndAnswers: function()
+    {
+        this.FirstNumber = this.GenerateRandomNumber(9);
+        this.SecondNumber = this.GenerateRandomNumber(9);
+        this.CorrectAnswer = this.FirstNumber * this.SecondNumber;
+        this.CorrectPosition = this.GenerateRandomNumber(3);
+        this.ChangeStyle("section#question", "style", "height:auto;");
+        this.AddContentToElement("section#question", this.FirstNumber + "x" + this.SecondNumber);
+        this.AddContentToElement( "ul#choices > li:nth-of-type(" + this.CorrectPosition + ")", this.CorrectAnswer );
+        this.LoopThroughElements();
+    },
+    Action: function()
+    {
+        Counter.PlayingState = setInterval( function()
+        {
+            Counter.TimeRemaining--;
+            
+            if (Counter.TimeRemaining <= 50)
+            {
+                Counter.ChangeStyle("button#start-reset", "style", "visibility:visible;");
+            }
+
+            if (Counter.TimeRemaining < 1)
+            {
+                Counter.Stop();
+            }
+            else
+            {
+                Counter.Refresh("aside#time-remaining > span", Counter.TimeRemaining);
+            }
+        }, 1000 );
+    },
+    EventListener: function(event)
+    {
+        if ( Number(event.currentTarget.innerText) === Number(Counter.CorrectAnswer) )
+        {
+            Counter.Score++;
+            Counter.Refresh("aside#score > span", Counter.Score);
+            Counter.GenerateQuestionAndAnswers();
+            Counter.ChangeStyle("p#message", "style", "visibility:visible; background-color:#23A230;");
+            Counter.AddContentToElement("p#message", "Correct");
+        }
+        else
+        {
+            if (Counter.Score >= 1)
+            {
+                Counter.Score -= 0.5;
+                Counter.Refresh("aside#score > span", Counter.Score);
+            }
+            
+            Counter.ChangeStyle("p#message", "style", "visibility:visible; background-color:#DE401A;");
+            Counter.AddContentToElement("p#message", "Try again");
+        }
+
+        setTimeout( function()
+        {
+            Counter.ChangeStyle("p#message", "style", "visibility:hidden;");
+        }, 1000 );
+    },
+    CheckClickOnRightAnswer: function()
+    {
+        for (var index = 1; index < 5; index++)
+        {
+            document.querySelector("ul#choices > li:nth-of-type(" + index + ")").removeEventListener("click", this.EventListener, false);
+            document.querySelector("ul#choices > li:nth-of-type(" + index + ")").addEventListener("click", this.EventListener);
+        }
+    },
+    Stop: function()
+    {
+        this.IsStoped = true;
+        clearInterval(this.PlayingState);
+        this.ChangeStyle("ul#choices", "style", "pointer-events:none; opacity:0.4;");
+        this.ChangeStyle("aside#time-remaining", "style", "visibility:hidden;");
+        this.ChangeStyle("div#game-over", "style", "display:block;");
+        this.AddContentToElement("button#start-reset", "Start Game");
+        this.AddContentToElement( "div#game-over > p:last-of-type > span", (this.Score !== "00" && this.Score < 10 ? "0" : "") + this.Score );
+        this.AddContentToElement("aside#score > span", this.Score = "00");
+    }
+};
+
+
+/*************************************************************************************************/
+/* ************************************** CODE PRINCIPAL *************************************** */
+/*************************************************************************************************/
+document.addEventListener('DOMContentLoaded', function()
+{
+    document.getElementById("start-reset").addEventListener("click", function()
+    {
+        Counter.Initialize(60);
+        Counter.IsStoped ? Counter.Launch() : Counter.Stop();
+        Counter.CheckClickOnRightAnswer();
+    });
+});
+
+        </script>
+    </head>
+
+    <body>
+            <nav id="navbar">
+                    <h1 class="logo">
+                        <span class="text-primary">
+                            <i class="fas fa-cannabis"></i> B1NARY
+                        </span> B0MBERS
+                    </h1>
+                    <ul>
+                        <li><a href="index.html" target="_blank">Home</a></li>
+                        <li><a href="game2.html" target="_blank">RGB Code</a></li>
+                        <li><a href="result.html" target="_blank">View Result</a></li>
+                    </ul>
+                </nav>
+        <main>
+            <div id="container">
+                <p id="message" class="structure-elements"></p>
+                <aside id="score" class="structure-elements">Score: <span>00</span></aside>
+
+                <div id="calculation">
+                    <section id="question" class="structure-elements"></section>
+                    <p id="instruction" class="structure-elements">Click on the correct answer:</p>
+                    <ul id="choices" class="structure-elements">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+
+                <button id="start-reset" class="structure-elements">Start Game</button>
+
+                <aside id="time-remaining" class="structure-elements">Time remaining: <span>60</span> sec</aside>
+            </div>
+
+            <div id="game-over" class="structure-elements">
+                <p>Game over!</p>
+                <p>Your score is <span>00</span>.</p>
+            </div>
+        </main>
+        
+            <!--
+            <footer id="main-footer" class="bg-dark text-center">
+                <div class="container">
+                        <p>Copyright &copy; 2020 ,&nbsp; All Rights Reserved</p>
+                        <p>Made with <span id="heart">&hearts;</span>  by <span class="text-primary">B1NARY</span> B0MBERS</p>
+               </div>
+                
+            </footer>
+            -->
+
+        <!-- <script src="script1.js"></script> -->
+    </body>
+</html>
