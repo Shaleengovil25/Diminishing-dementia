@@ -214,8 +214,17 @@ input,textarea{
 a[href="https://www.shaleen.co"]{
     color: white;
 }
-
+a[href="https://www.shaleen.co"]:hover{
+    color: #93cb52;
+    text-decoration: none;
+}
 #result{
     text-align: center;
     padding: 20px;
+}
+a[href="https://visitorshitcounter.com/"]{
+    color: #93cb52;
+    opacity: 0.6;
+    line-height: 0.1rem;
+
 }
