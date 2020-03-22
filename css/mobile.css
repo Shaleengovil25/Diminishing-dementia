@@ -54,5 +54,8 @@
         height: 200px;
         border-top: #333 dotted 1px;
     }
+        a[href="https://visitorshitcounter.com/"]{
+        visibility: hidden;
+    }
     
 }
