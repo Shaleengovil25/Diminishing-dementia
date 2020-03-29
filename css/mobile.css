@@ -41,19 +41,6 @@
     #who .who-img{
         display: none;
     }
-    #clients .things img{
-        width: 80%;
-    }
-    #clients .things div:last-child{
-        display: none;
-    }
-    #contact{
-        display: block;
-    }
-    #contact .map{
-        height: 200px;
-        border-top: #333 dotted 1px;
-    }
         a[href="https://visitorshitcounter.com/"]{
         visibility: hidden;
     }
