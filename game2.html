@@ -81,6 +81,11 @@ button:hover{
     display: inline-block;
     width: 20%;
 }
+
+#time-left{                                                                                         /*styling for the timer*/
+    margin-right: 20px;
+    font-weight: 700;
+}
         </style>
     </head>
     <body>
@@ -107,6 +112,7 @@ button:hover{
             <button id="reset">NEW COLORS</button>
             <span id="message">
             </span>
+            <span id="time-left" >60</span>
             <button class="mode">EASY</button>
             <button  class=" mode selected">HARD</button>
 
@@ -147,13 +153,27 @@ var colorDisplay=document.getElementById("colorDisplay");
 var message=document.getElementById("message");
 var reset=document.getElementById("reset");
 var btns=document.querySelectorAll(".mode");
+var timeLeft = document.querySelector("#time-left");
 var pickedcolor;
+let currentTime = timeLeft.textContent;
+
+function countDown() {                                          //function to countdown from the current time
+    currentTime--;
+    timeLeft.textContent = currentTime;
+    if(currentTime === 0){
+        clearInterval(timerId);
+        alert('Game Over!');
+    }
+}
+
+let timerId =  setInterval(countDown, 1000);
 
 init();
 function init(){
 
 for(var i=0; i<btns.length; i++){
     btns[i].addEventListener("click",function(){
+       
         btns[0].classList.remove("selected");
         btns[1].classList.remove("selected");
 
@@ -164,12 +184,24 @@ for(var i=0; i<btns.length; i++){
 
         if(this.textContent==="EASY"){
             numsq=3;
+            clearInterval(timerId);
+            timeLeft.textContent = 30;                                         //timeout after 30 seconds
+            currentTime = 30;
+            timerId = setInterval(countDown,1000);
         }
         else if (this.textContent==="HARD"){
             numsq=6;
+            clearInterval(timerId);
+            timeLeft.textContent = 60;                                                 //timeout after 60 seconds
+            currentTime = 60;
+            timerId = setInterval(countDown,1000);
         }
         else if(this.textContent==="VERY HARD"){
             numsq=9;
+            clearInterval(timerId);                                                     //timeout after 90 seconds
+            timeLeft.textContent = 90;
+            currentTime = 90;
+            timerId = setInterval(countDown,1000);
         }
         
         resetfn();
@@ -181,6 +213,7 @@ for(var i=0 ; i< squares.length ; i++){
 
         var clickedColor=this.style.backgroundColor;
         if(clickedColor===pickedcolor){
+            clearInterval(timerId);                                             //stop the timer when correct square is clicked
             message.textContent="CORRECT!!";
             changecolor(clickedColor);
             reset.textContent="PLAY AGAIN??";
@@ -262,6 +295,10 @@ return "rgb("+ r + ", "+ g +", "+ b +")" ;
 
 reset.addEventListener("click",function(){
     resetfn();
+    clearInterval(timerId);                                                                 //timer is reset each time 'NEW COLORS' is clicked upon
+    timeLeft.textContent = numsq*10;
+    currentTime = numsq*10;
+    timerId = setInterval(countDown,1000);
     
 })
     </script>
